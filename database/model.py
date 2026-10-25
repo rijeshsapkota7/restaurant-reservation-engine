@@ -24,4 +24,12 @@ class ResturantTables(Base):
     table_number = Column(Integer, nullable=False)
     table_capacity = Column(Integer, nullable=False)
 
-    
+class Reservation(Base):
+    __tablename__ = "reservation"
+    id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey("users.id"))
+    table_id = Column(Integer, ForeignKey("resturantTables.id"))
+    reservation_date = Column(String, nullable=False)
+    time_slot = Column(String, nullable=False)
+    guest_count = Column(Integer, nullable=False)
+    status = Column(String, nullable=False, default="booked")
