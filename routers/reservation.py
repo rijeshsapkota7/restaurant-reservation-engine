@@ -6,16 +6,27 @@ from sqlalchemy.orm import Session
 from database.model import Users, Restaurants, ResturantTables, Reservation
 from security.security import check_access_token
 from pydantic import BaseModel, Field
-from typing import Literal
+from enum import Enum
 
 router = APIRouter(prefix="/reservation", tags=["Reservation"])
+
+class TimeSlot(str, Enum):
+    SLOT_9_00 = "9:00"
+    SLOT_10_00 = "10:00"
+    SLOT_11_00 = "11:00"
+    SLOT_12_00 = "12:00"
+    SLOT_13_00 = "13:00"
+    SLOT_14_00 = "14:00"
+    SLOT_18_00 = "18:00"
+    SLOT_19_00 = "19:00"
+    SLOT_20_00 = "20:00"
 
 class ReservationCreate(BaseModel):
     table_no : int
     reservation_Date : str
     time_slot : str
     guest_count : int = Field(gt=0, description="Guest no should be greater than 0")
-    status : Literal["booked", "cancelled"]
+    status : TimeSlot
 
 @router.post("/", status_code = 201)
 def reserve_tables(data : ReservationCreate, db : Session = Depends(get_db), current_user : HTTPAuthorizationCredentials = Depends(check_access_token)):
