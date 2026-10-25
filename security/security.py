@@ -7,11 +7,12 @@ from fastapi import HTTPException, Depends
 from database.database import get_db
 from database.model import Users
 from sqlalchemy.orm import Session
+from env_loader import SECREATKEY, ALGORITHM
 
 
 
-security_key = "ThisIsTheFirstSecurityKeyOfMyProgram"
-algorithm = "HS256"
+security_key = SECREATKEY
+algorithm = ALGORITHM
 security_scheme = HTTPBearer()
 
 def hash_password(plain_password : str) -> str:
